@@ -146,7 +146,7 @@
     <comment>Button text for share feedback show card in QnA response card.</comment>
   </data>
   <data name="DescriptionText" xml:space="preserve">
-    <value>Description</value>
+    <value>Descripción</value>
     <comment>Label text for description.</comment>
   </data>
   <data name="FeedbackDescriptionPlaceholderText" xml:space="preserve">
@@ -231,7 +231,7 @@
     <comment>Response header-letting the user know that a response is generated to their request from QnA Maker.</comment>
   </data>
   <data name="ClosedFactTitle" xml:space="preserve">
-    <value>Cerradas:</value>
+    <value>Cerrada:</value>
     <comment>Closed fact title is one of the available fact set.</comment>
   </data>
   <data name="DateCreatedDisplayFactTitle" xml:space="preserve">
@@ -263,7 +263,7 @@
     <comment>Ask an expert display text: text sent to the bot when ask an expert button is clicked.</comment>
   </data>
   <data name="ShareFeedbackDisplayText" xml:space="preserve">
-    <value>Share feedback</value>
+    <value>Compartir feedback</value>
     <comment>Share feedback display text: text sent to the bot when share feedback button is clicked.</comment>
   </data>
   <data name="SMEAssignedStatus" xml:space="preserve">
@@ -375,11 +375,11 @@
     <comment>Rating is mandatory , a warning message to the user when rating is not submitted in share feedback activity.</comment>
   </data>
   <data name="TakeATourButtonText" xml:space="preserve">
-    <value>Toma el tour</value>
+    <value>Tomar el tour</value>
     <comment>Take a tour button available for the users on welcome card, through which user can take a tour on bot functionalities in personal scope. </comment>
   </data>
   <data name="TitleFact" xml:space="preserve">
-    <value>Title:</value>
+    <value>Titulo:</value>
     <comment>Title fact is used to show the title entered by the user for his inquiry.</comment>
   </data>
   <data name="TitleRequiredText" xml:space="preserve">

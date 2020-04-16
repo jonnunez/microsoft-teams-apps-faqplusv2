@@ -205,7 +205,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cerradas:.
+        ///   Looks up a localized string similar to Cerrada:.
         /// </summary>
         public static string ClosedFactTitle {
             get {
@@ -313,7 +313,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description.
+        ///   Looks up a localized string similar to Descripción.
         /// </summary>
         public static string DescriptionText {
             get {
@@ -772,7 +772,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Share feedback.
+        ///   Looks up a localized string similar to Compartir feedback.
         /// </summary>
         public static string ShareFeedbackDisplayText {
             get {
@@ -916,7 +916,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toma el tour.
+        ///   Looks up a localized string similar to Tomar el tour.
         /// </summary>
         public static string TakeATourButtonText {
             get {
@@ -997,7 +997,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Title:.
+        ///   Looks up a localized string similar to Titulo:.
         /// </summary>
         public static string TitleFact {
             get {
