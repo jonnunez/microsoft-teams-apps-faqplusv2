@@ -3,42 +3,49 @@
     ViewBag.Title = "Configuration App";
 }
 
-<div class="row contentMargin">
-    <div id="spinner" style="display: none">
-        @Html.Partial("~/Views/Shared/_Spinner.cshtml")
-    </div>
-    <div class="col-lg-12">
-        <div class="col-lg-8">
-            @Html.Partial("~/Views/Home/_Team.cshtml")
+    <div class="row contentMargin">
+        <div id="spinner" style="display: none">
+            @Html.Partial("~/Views/Shared/_Spinner.cshtml")
         </div>
-    </div>
-    <div class="col-lg-12 marginBetweenView">
-        <hr />
-    </div>
-    <div class="col-lg-12">
-        <div class="col-lg-8">
-            @Html.Partial("~/Views/Home/_KnowledgeBase.cshtml")
+        <div class="col-lg-12">
+            <div class="col-lg-8">
+                @Html.Partial("~/Views/Home/_Team.cshtml")
+            </div>
         </div>
-    </div>
-    <div class="col-lg-12 marginBetweenView">
-        <hr />
-    </div>
-    <div class="col-lg-12">
-        <div class="col-lg-8">
-            @Html.Partial("~/Views/Home/_WelcomeMessage.cshtml")
+        <div class="col-lg-12 marginBetweenView">
+            <hr />
         </div>
-    </div>
-    <div class="col-lg-12 marginBetweenView">
-        <hr />
-    </div>
-    <div class="col-lg-12">
-        <div class="col-lg-8">
-            @Html.Partial("~/Views/Home/_HelpTab.cshtml")
+        <div class="col-lg-12">
+            <div class="col-lg-8">
+                @Html.Partial("~/Views/Home/_KnowledgeBase.cshtml")
+            </div>
         </div>
-    </div>
-</div>
+        <div class="col-lg-12 marginBetweenView">
+            <hr />
+        </div>
+        <div class="col-lg-12">
+            <div class="col-lg-8">
+                @Html.Partial("~/Views/Home/_WelcomeMessage.cshtml")
+            </div>
+        </div>
+        <div class="col-lg-12 marginBetweenView">
+            <hr />
+        </div>
+        <div class="col-lg-12">
+            <div class="col-lg-8">
+                @Html.Partial("~/Views/Home/_HelpTab.cshtml")
+            </div>
+        </div>
+        <div class="col-lg-12 marginBetweenView">
+            <hr />
+        </div>
+        <div class="col-lg-12">
+            <div class="col-lg-8">
+                @Html.Partial("~/Views/Home/_Team - Copy.cshtml")
+            </div>
+        </div>
 
-<script type="text/javascript">
+        <script type="text/javascript">
     $(function () {
         //Display team id if its saved if yes then perform edit UI changes
         $.ajax({
@@ -162,4 +169,4 @@
     $(document).ajaxStop(function () {
         $("#spinner").hide();
     });
-</script>
+        </script>
