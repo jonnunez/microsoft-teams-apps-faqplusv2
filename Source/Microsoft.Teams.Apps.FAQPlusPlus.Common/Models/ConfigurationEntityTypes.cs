@@ -14,6 +14,11 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Models
         public const string TeamId = "TeamId";
 
         /// <summary>
+        /// Team entity.
+        /// </summary>
+        public const string TeamId2 = "TeamId2";
+
+        /// <summary>
         /// Knowledge base entity.
         /// </summary>
         public const string KnowledgeBaseId = "KnowledgeBaseId";
