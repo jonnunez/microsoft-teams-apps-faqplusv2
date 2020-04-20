@@ -60,22 +60,7 @@
             error: function (error) {
                 saveFailureIconAndText("teamStorageStatusIcon", "teamStorageStatusMessage", "Unable to display team id due to HTTP: " + error.status + ", " + error.statusText);
             }
-        });
-
-         //Display team id if its saved if yes then perform edit UI changes
-        $.ajax({
-            type: "GET",
-            url: '@Url.Action("GetSavedTeamIdAsync2")',
-            success: function (result) {
-                if (result != "") {                //Display the default UI when no team id results are available for display
-                    $(".teamIdTextBox").val(result);
-                    toggleToEdit("team");
-                }
-            },
-            error: function (error) {
-                saveFailureIconAndText("teamStorageStatusIcon", "teamStorageStatusMessage", "Unable to display team id 2 due to HTTP: " + error.status + ", " + error.statusText);
-            }
-        });
+        });        
 
         //Display knowledgeBase id if its saved if yes then perform edit UI changes
         $.ajax({

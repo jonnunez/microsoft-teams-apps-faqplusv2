@@ -1,6 +1,6 @@
 ﻿@model Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Models.TeamViewModel2
 
-@using (Ajax.BeginForm("ParseAndSaveTeamIdAsync2", "Home", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onSaveSuccess", OnFailure = "onSaveFailure" }, htmlAttributes: new { @class = "formToSubmit" }))
+@using (Ajax.BeginForm("ParseAndSaveTeamIdAsync", "Home", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onSaveSuccess", OnFailure = "onSaveFailure" }, htmlAttributes: new { @class = "formToSubmit" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-group" data-form-name="team">

@@ -93,16 +93,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         {
             return await this.configurationPovider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.TeamId).ConfigureAwait(false);
         }
-
-        /// <summary>
-        /// Get already saved team id from table storage.
-        /// </summary>
-        /// <returns>Team id.</returns>
-        [HttpGet]
-        public async Task<string> GetSavedTeamIdAsync2()
-        {
-            return await this.configurationPovider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.TeamId2).ConfigureAwait(false);
-        }
+               
 
         /// <summary>
         /// Save or update knowledgeBaseId in table storage which is received from View.
