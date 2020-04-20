@@ -880,10 +880,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="turnContext">Context object containing information cached for a single turn of conversation with a user.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>A task that represents the work queued to execute.</returns>
-        private async Task OnAdaptiveCardSubmitInPersonalChatAsync(
-            IMessageActivity message,
-            ITurnContext<IMessageActivity> turnContext,
-            CancellationToken cancellationToken)
+        private async Task OnAdaptiveCardSubmitInPersonalChatAsync(IMessageActivity message, ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             Attachment smeTeamCard = null;      // Notification to SME team
             Attachment userCard = null;         // Acknowledgement to the user
@@ -936,15 +933,17 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             if (smeTeamCard != null)
             {
                 var resourceResponse = await this.SendCardToTeamAsync(turnContext, smeTeamCard, expertTeamId, cancellationToken).ConfigureAwait(false);
-                var resourceResponse2 = await this.SendCardToTeamAsync(turnContext, smeTeamCard, expertFeedbackId, cancellationToken).ConfigureAwait(false);
+                var resourceResponseFeedback = await this.SendCardToChannelAsync(turnContext, smeTeamCard, expertFeedbackId, cancellationToken).ConfigureAwait(false);
 
                 // If a ticket was created, update the ticket with the conversation info.
                 if (newTicket != null)
                 {
-                    // newTicket.SmeCardActivityId = resourceResponse.ActivityId;
-                    // newTicket.SmeThreadConversationId = resourceResponse.Id;
-                    newTicket.SmeCardActivityId = resourceResponse2.ActivityId;
-                    newTicket.SmeThreadConversationId = resourceResponse2.Id;
+                    newTicket.SmeCardActivityId = resourceResponse.ActivityId;
+                    newTicket.SmeThreadConversationId = resourceResponse.Id;
+
+                    newTicket.FeedbackChannelCardActivityId = resourceResponseFeedback.ActivityId;
+                    newTicket.FeedbackChannelThreadConversationId = resourceResponseFeedback.Id;
+
                     await this.ticketsProvider.UpsertTicketAsync(newTicket).ConfigureAwait(false);
                 }
             }
@@ -964,10 +963,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="turnContext">Context object containing information cached for a single turn of conversation with a user.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>A task that represents the work queued to execute.</returns>
-        private async Task OnAdaptiveCardSubmitInChannelAsync(
-            IMessageActivity message,
-            ITurnContext<IMessageActivity> turnContext,
-            CancellationToken cancellationToken)
+        private async Task OnAdaptiveCardSubmitInChannelAsync(IMessageActivity message, ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             var payload = ((JObject)message.Value).ToObject<ChangeTicketStatusPayload>();
             this.logger.LogInformation($"Received submit: ticketId={payload.TicketId} action={payload.Action}");
@@ -1094,16 +1090,50 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="teamId">Team id to which the message is being sent.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns><see cref="Task"/>That resolves to a <see cref="ConversationResourceResponse"/>Send a attachemnt.</returns>
-        private async Task<ConversationResourceResponse> SendCardToTeamAsync(
-            ITurnContext turnContext,
-            Attachment cardToSend,
-            string teamId,
-            CancellationToken cancellationToken)
+        private async Task<ConversationResourceResponse> SendCardToTeamAsync(ITurnContext turnContext, Attachment cardToSend, string teamId, CancellationToken cancellationToken)
         {
             var conversationParameters = new ConversationParameters
             {
                 Activity = (Activity)MessageFactory.Attachment(cardToSend),
                 ChannelData = new TeamsChannelData { Channel = new ChannelInfo(teamId) },
+            };
+
+            var taskCompletionSource = new TaskCompletionSource<ConversationResourceResponse>();
+            await ((BotFrameworkAdapter)turnContext.Adapter).CreateConversationAsync(
+                null,       // If we set channel = "msteams", there is an error as preinstalled middleware expects ChannelData to be present.
+                turnContext.Activity.ServiceUrl,
+                this.microsoftAppCredentials,
+                conversationParameters,
+                (newTurnContext, newCancellationToken) =>
+                {
+                    var activity = newTurnContext.Activity;
+                    taskCompletionSource.SetResult(new ConversationResourceResponse
+                    {
+                        Id = activity.Conversation.Id,
+                        ActivityId = activity.Id,
+                        ServiceUrl = activity.ServiceUrl,
+                    });
+                    return Task.CompletedTask;
+                },
+                cancellationToken).ConfigureAwait(false);
+
+            return await taskCompletionSource.Task.ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Send the given attachment to the specified team.
+        /// </summary>
+        /// <param name="turnContext">Context object containing information cached for a single turn of conversation with a user.</param>
+        /// <param name="cardToSend">The card to send.</param>
+        /// <param name="channelId">Channel id to which the message is being sent.</param>
+        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+        /// <returns><see cref="Task"/>That resolves to a <see cref="ConversationResourceResponse"/>Send a attachemnt.</returns>
+        private async Task<ConversationResourceResponse> SendCardToChannelAsync(ITurnContext turnContext, Attachment cardToSend, string channelId, CancellationToken cancellationToken)
+        {
+            var conversationParameters = new ConversationParameters
+            {
+                Activity = (Activity)MessageFactory.Attachment(cardToSend),
+                ChannelData = new TeamsChannelData { Channel = new ChannelInfo(channelId) },
             };
 
             var taskCompletionSource = new TaskCompletionSource<ConversationResourceResponse>();

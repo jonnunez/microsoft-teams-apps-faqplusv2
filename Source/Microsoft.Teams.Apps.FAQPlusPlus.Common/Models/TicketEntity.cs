@@ -81,10 +81,22 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Models
         public string SmeCardActivityId { get; set; }
 
         /// <summary>
+        /// Gets or sets the activity id of the root card in the SME channel.
+        /// </summary>
+        [JsonProperty("FeedbackChannelCardActivityId")]
+        public string FeedbackChannelCardActivityId { get; set; }
+
+        /// <summary>
         /// Gets or sets the conversation id of the thread pertaining to this ticket in the SME channel.
         /// </summary>
         [JsonProperty("SmeThreadConversationId")]
         public string SmeThreadConversationId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the conversation id of the thread pertaining to this ticket in the SME channel.
+        /// </summary>
+        [JsonProperty("FeedbackChannelThreadConversationId")]
+        public string FeedbackChannelThreadConversationId { get; set; }
 
         /// <summary>
         /// Gets or sets the UTC date and time the ticket was last assigned.
