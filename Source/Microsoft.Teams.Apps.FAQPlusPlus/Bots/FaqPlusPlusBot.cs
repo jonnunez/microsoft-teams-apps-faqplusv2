@@ -376,10 +376,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <remarks>
         /// https://docs.microsoft.com/en-us/dotnet/api/microsoft.bot.builder.teams.teamsactivityhandler.onteamsmessagingextensionqueryasync?view=botbuilder-dotnet-stable.
         /// </remarks>
-        protected override async Task<MessagingExtensionResponse> OnTeamsMessagingExtensionQueryAsync(
-            ITurnContext<IInvokeActivity> turnContext,
-            MessagingExtensionQuery query,
-            CancellationToken cancellationToken)
+        protected override async Task<MessagingExtensionResponse> OnTeamsMessagingExtensionQueryAsync(ITurnContext<IInvokeActivity> turnContext, MessagingExtensionQuery query,CancellationToken cancellationToken)
         {
             var turnContextActivity = turnContext?.Activity;
             try
@@ -424,10 +421,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <remarks>
         /// Reference link: https://docs.microsoft.com/en-us/dotnet/api/microsoft.bot.builder.teams.teamsactivityhandler.onteamsmessagingextensionfetchtaskasync?view=botbuilder-dotnet-stable.
         /// </remarks>
-        protected override Task<MessagingExtensionActionResponse> OnTeamsMessagingExtensionFetchTaskAsync(
-            ITurnContext<IInvokeActivity> turnContext,
-            MessagingExtensionAction action,
-            CancellationToken cancellationToken)
+        protected override Task<MessagingExtensionActionResponse> OnTeamsMessagingExtensionFetchTaskAsync(ITurnContext<IInvokeActivity> turnContext,MessagingExtensionAction action,CancellationToken cancellationToken)
         {
             try
             {
@@ -473,10 +467,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <remarks>
         /// Reference link: https://docs.microsoft.com/en-us/dotnet/api/microsoft.bot.builder.teams.teamsactivityhandler.onteamsmessagingextensionsubmitactionasync?view=botbuilder-dotnet-stable.
         /// </remarks>
-        protected override async Task<MessagingExtensionActionResponse> OnTeamsMessagingExtensionSubmitActionAsync(
-            ITurnContext<IInvokeActivity> turnContext,
-            MessagingExtensionAction action,
-            CancellationToken cancellationToken)
+        protected override async Task<MessagingExtensionActionResponse> OnTeamsMessagingExtensionSubmitActionAsync(ITurnContext<IInvokeActivity> turnContext, MessagingExtensionAction action, CancellationToken cancellationToken)
         {
             try
             {
@@ -574,11 +565,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// if sme user is providing the value for fields like: image url or title or subtitle or redirection url then it's a rich card otherwise it will be a normal card containing only question and answer. </param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>Response of messaging extension action object.</returns>
-        private async Task<MessagingExtensionActionResponse> AddQuestionCardResponseAsync(
-        ITurnContext<IInvokeActivity> turnContext,
-        AdaptiveSubmitActionData qnaPairEntity,
-        bool isRichCard,
-        CancellationToken cancellationToken)
+        private async Task<MessagingExtensionActionResponse> AddQuestionCardResponseAsync(ITurnContext<IInvokeActivity> turnContext, AdaptiveSubmitActionData qnaPairEntity, bool isRichCard, CancellationToken cancellationToken)
         {
             string combinedDescription = QnaHelper.BuildCombinedDescriptionAsync(qnaPairEntity);
 
@@ -652,10 +639,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="postedQnaPairEntity">Qna pair entity that contains question and answer information.</param>
         /// <param name="answer">Answer text.</param>
         /// <returns>Card attachment.</returns>
-        private async Task<Attachment> CardResponseAsync(
-            ITurnContext<IInvokeActivity> turnContext,
-            AdaptiveSubmitActionData postedQnaPairEntity,
-            string answer)
+        private async Task<Attachment> CardResponseAsync(ITurnContext<IInvokeActivity> turnContext, AdaptiveSubmitActionData postedQnaPairEntity, string answer)
         {
             Attachment qnaAdaptiveCard = new Attachment();
             bool isSaved;
@@ -885,7 +869,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             Attachment smeTeamCard = null;      // Notification to SME team
             Attachment userCard = null;         // Acknowledgement to the user
             TicketEntity newTicket = null;      // New ticket
-            
+
 
 
             switch (message?.Text)
@@ -920,7 +904,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     {
                         await turnContext.SendActivityAsync(MessageFactory.Text(Strings.ThankYouTextContent)).ConfigureAwait(false);
                     }
-
                     break;
 
                 default:
@@ -935,7 +918,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             if (smeTeamCard != null)
             {
                 var resourceResponse = await this.SendCardToTeamAsync(turnContext, smeTeamCard, expertTeamId, cancellationToken).ConfigureAwait(false);
-                var resourceResponseFeedback = await this.SendCardToTeamAsync(turnContext, smeTeamCard, expertTeamId, cancellationToken).ConfigureAwait(false);
+                var resourceResponseFeedback = await this.SendCardToTeamAsync(turnContext, smeTeamCard, expertFeedbackId, cancellationToken).ConfigureAwait(false);
 
                 // If a ticket was created, update the ticket with the conversation info.
                 if (newTicket != null)
@@ -1098,44 +1081,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             {
                 Activity = (Activity)MessageFactory.Attachment(cardToSend),
                 ChannelData = new TeamsChannelData { Channel = new ChannelInfo(teamId) },
-            };
-
-            var taskCompletionSource = new TaskCompletionSource<ConversationResourceResponse>();
-            await ((BotFrameworkAdapter)turnContext.Adapter).CreateConversationAsync(
-                null,       // If we set channel = "msteams", there is an error as preinstalled middleware expects ChannelData to be present.
-                turnContext.Activity.ServiceUrl,
-                this.microsoftAppCredentials,
-                conversationParameters,
-                (newTurnContext, newCancellationToken) =>
-                {
-                    var activity = newTurnContext.Activity;
-                    taskCompletionSource.SetResult(new ConversationResourceResponse
-                    {
-                        Id = activity.Conversation.Id,
-                        ActivityId = activity.Id,
-                        ServiceUrl = activity.ServiceUrl,
-                    });
-                    return Task.CompletedTask;
-                },
-                cancellationToken).ConfigureAwait(false);
-
-            return await taskCompletionSource.Task.ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Send the given attachment to the specified team.
-        /// </summary>
-        /// <param name="turnContext">Context object containing information cached for a single turn of conversation with a user.</param>
-        /// <param name="cardToSend">The card to send.</param>
-        /// <param name="channelId">Channel id to which the message is being sent.</param>
-        /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        /// <returns><see cref="Task"/>That resolves to a <see cref="ConversationResourceResponse"/>Send a attachemnt.</returns>
-        private async Task<ConversationResourceResponse> SendCardToChannelAsync(ITurnContext turnContext, Attachment cardToSend, string channelId, CancellationToken cancellationToken)
-        {
-            var conversationParameters = new ConversationParameters
-            {
-                Activity = (Activity)MessageFactory.Attachment(cardToSend),
-                ChannelData = new TeamsChannelData { Channel = new ChannelInfo(channelId) },
             };
 
             var taskCompletionSource = new TaskCompletionSource<ConversationResourceResponse>();
@@ -1440,9 +1385,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="turnContext">Context object containing information cached for a single turn of conversation with a user.</param>
         /// <param name="text">Text message.</param>
         /// <returns>A task that represents the work queued to execute.</returns>
-        private async Task GetQuestionAnswerReplyAsync(
-            ITurnContext<IMessageActivity> turnContext,
-            string text)
+        private async Task GetQuestionAnswerReplyAsync(ITurnContext<IMessageActivity> turnContext, string text)
         {
             try
             {
