@@ -938,12 +938,11 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 var resourceResponse = await this.SendCardToTeamAsync(turnContext, smeTeamCard, expertTeamId, cancellationToken).ConfigureAwait(false);
                 var resourceResponse2 = await this.SendCardToTeamAsync(turnContext, smeTeamCard, expertFeedbackId, cancellationToken).ConfigureAwait(false);
 
-
                 // If a ticket was created, update the ticket with the conversation info.
                 if (newTicket != null)
                 {
-                    newTicket.SmeCardActivityId = resourceResponse.ActivityId;
-                    newTicket.SmeThreadConversationId = resourceResponse.Id;
+                    // newTicket.SmeCardActivityId = resourceResponse.ActivityId;
+                    // newTicket.SmeThreadConversationId = resourceResponse.Id;
                     newTicket.SmeCardActivityId = resourceResponse2.ActivityId;
                     newTicket.SmeThreadConversationId = resourceResponse2.Id;
                     await this.ticketsProvider.UpsertTicketAsync(newTicket).ConfigureAwait(false);
