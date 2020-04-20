@@ -62,7 +62,26 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
                 return await this.UpsertTeamIdAsync(teamIdAfterParse).ConfigureAwait(false);
             }
         }
-        
+
+        /// <summary>
+        /// Parse channel id from first and then proceed to save it on success.
+        /// </summary>
+        /// <param name="channelId">Team id is the unique string.</param>
+        /// <returns>View.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ParseAndSaveChannelIdAsync(string channelId = "")
+        {
+            string channelIdAfterParse = ParseTeamChannelFromDeepLink(channelId ?? string.Empty);
+            if (string.IsNullOrWhiteSpace(channelIdAfterParse))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "The provided channel id is not valid.");
+            }
+            else
+            {
+                return await this.UpsertChannelIdAsync(channelIdAfterParse).ConfigureAwait(false);
+            }
+        }
 
         /// <summary>
         /// Save or update teamId in table storage which is received from View.
@@ -85,6 +104,26 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         }
 
         /// <summary>
+        /// Save or update teamId in table storage which is received from View.
+        /// </summary>
+        /// <param name="channelId">Team id is the unique deep link URL string associated with each team.</param>
+        /// <returns>View.</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UpsertChannelIdAsync(string channelId)
+        {
+            bool isSaved = await this.configurationPovider.UpsertEntityAsync(channelId, ConfigurationEntityTypes.ChannelId).ConfigureAwait(false);
+            if (isSaved)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Sorry, unable to save the channel id due to an internal error. Try again.");
+            }
+        }
+
+        /// <summary>
         /// Get already saved team id from table storage.
         /// </summary>
         /// <returns>Team id.</returns>
@@ -93,7 +132,16 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
         {
             return await this.configurationPovider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.TeamId).ConfigureAwait(false);
         }
-               
+
+        /// <summary>
+        /// Get already saved channel id from table storage.
+        /// </summary>
+        /// <returns>Channel id.</returns>
+        [HttpGet]
+        public async Task<string> GetSavedChannelIdAsync()
+        {
+            return await this.configurationPovider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.ChannelId).ConfigureAwait(false);
+        }
 
         /// <summary>
         /// Save or update knowledgeBaseId in table storage which is received from View.
@@ -232,6 +280,21 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Controllers
             // for a pattern like https://teams.microsoft.com/l/team/19%3a64c719819fb1412db8a28fd4a30b581a%40thread.tacv2/conversations?groupId=53b4782c-7c98-4449-993a-441870d10af9&tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47
             // regex checks for 19%3a64c719819fb1412db8a28fd4a30b581a%40thread.tacv2
             var match = Regex.Match(teamIdDeepLink, @"teams.microsoft.com/l/team/(\S+)/");
+
+            if (!match.Success)
+            {
+                return string.Empty;
+            }
+
+            return HttpUtility.UrlDecode(match.Groups[1].Value);
+        }
+
+        private static string ParseTeamChannelFromDeepLink(string channelIdDeepLink)
+        {
+            // team id regex match
+            // for a pattern like https://teams.microsoft.com/l/team/19%3a64c719819fb1412db8a28fd4a30b581a%40thread.tacv2/conversations?groupId=53b4782c-7c98-4449-993a-441870d10af9&tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47
+            // regex checks for 19%3a64c719819fb1412db8a28fd4a30b581a%40thread.tacv2
+            var match = Regex.Match(channelIdDeepLink, @"teams.microsoft.com/l/channel/(\S+)/");
 
             if (!match.Success)
             {

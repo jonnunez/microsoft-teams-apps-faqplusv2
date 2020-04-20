@@ -5,6 +5,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Models
 {
     /// <summary>
     /// Configuration entity type names.
+    /// This is what appears in the storage table under ROWKEY calumn.
     /// </summary>
     public static class ConfigurationEntityTypes
     {
@@ -16,7 +17,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Models
         /// <summary>
         /// Team entity.
         /// </summary>
-        public const string TeamId2 = "TeamId2";
+        public const string ChannelId = "ChannelId";
 
         /// <summary>
         /// Knowledge base entity.

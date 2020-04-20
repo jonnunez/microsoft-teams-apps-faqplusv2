@@ -1,4 +1,4 @@
-﻿// <copyright file="TeamViewModel.cs" company="Microsoft">
+﻿// <copyright file="ChannelViewModel.cs" company="Microsoft">
 // Copyright (c) Microsoft. All rights reserved.
 // </copyright>
 
@@ -9,16 +9,16 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Models
     /// <summary>
     /// Represents TeamViewModel object to store team details.
     /// </summary>
-    public class TeamViewModel2
+    public class ChannelViewModel
     {
         /// <summary>
         /// Gets or sets team id textbox to be used in View.
         /// </summary>
-        [Required(ErrorMessage = "Enter team id 2.")]
+        [Required(ErrorMessage = "Enter channel id")]
         [MinLength(1)]
         [DataType(DataType.Text)]
-        [Display(Name = "Team ID 2")]
-        [RegularExpression(@"(\S)+", ErrorMessage = "Enter team id 2 which should not contain any whitespace.")]
-        public string TeamId2 { get; set; }
+        [Display(Name = "Channel ID")]
+        [RegularExpression(@"(\S)+", ErrorMessage = "Enter channel id which should not contain any whitespace.")]
+        public string ChannelId { get; set; }
     }
 }
