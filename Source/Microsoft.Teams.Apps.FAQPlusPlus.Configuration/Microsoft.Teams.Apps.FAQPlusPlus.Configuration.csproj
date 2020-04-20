@@ -276,6 +276,7 @@
     </Compile>
     <Compile Include="Models\KnowledgeBaseViewModel.cs" />
     <Compile Include="Models\HelpTabViewModel.cs" />
+    <Compile Include="Models\TeamViewModel2.cs" />
     <Compile Include="Models\TeamViewModel.cs" />
     <Compile Include="Models\WelcomeMessageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
