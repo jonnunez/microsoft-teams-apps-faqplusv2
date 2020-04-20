@@ -9,7 +9,7 @@
             <span class="mandatoryField">*</span>
         </div>
         <div class="col-lg-5">
-            @Html.TextBoxFor(model => model.ChannelId, htmlAttributes: new { @class = "form-control teamIdTextBox toggleTextBox", @placeholder = "Enter channel ID." })
+            @Html.TextBoxFor(model => model.ChannelId, htmlAttributes: new { @class = "form-control channelIdTextBox toggleTextBox", @placeholder = "Enter channel ID." })
             @Html.ValidationMessageFor(model => model.ChannelId, "", htmlAttributes: new { @class = "error-message" })
         </div>
         <div class="col-lg-1">
