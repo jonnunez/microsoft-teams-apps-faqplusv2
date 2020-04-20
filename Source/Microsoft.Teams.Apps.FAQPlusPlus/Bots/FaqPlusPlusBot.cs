@@ -869,7 +869,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             Attachment smeTeamCard = null;      // Notification to SME team
             Attachment userCard = null;         // Acknowledgement to the user
             TicketEntity newTicket = null;      // New ticket
-
+            Attachment feedbackchannelcard = null;
 
 
             switch (message?.Text)
@@ -899,8 +899,14 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
                 case ShareFeedbackCard.ShareFeedbackSubmitText:
                     this.logger.LogInformation("Received app feedback");
-                    smeTeamCard = await AdaptiveCardHelper.ShareFeedbackSubmitText(message, turnContext, cancellationToken).ConfigureAwait(false);
-                    if (smeTeamCard != null)
+
+                    // smeTeamCard = await AdaptiveCardHelper.ShareFeedbackSubmitText(message, turnContext, cancellationToken).ConfigureAwait(false);
+                    // if (smeTeamCard != null)
+                    // {
+                    //    await turnContext.SendActivityAsync(MessageFactory.Text(Strings.ThankYouTextContent)).ConfigureAwait(false);
+                    // }
+                    feedbackchannelcard = await AdaptiveCardHelper.ShareFeedbackSubmitText(message, turnContext, cancellationToken).ConfigureAwait(false);
+                    if (feedbackchannelcard != null)
                     {
                         await turnContext.SendActivityAsync(MessageFactory.Text(Strings.ThankYouTextContent)).ConfigureAwait(false);
                     }
@@ -918,7 +924,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             if (smeTeamCard != null)
             {
                 var resourceResponse = await this.SendCardToTeamAsync(turnContext, smeTeamCard, expertTeamId, cancellationToken).ConfigureAwait(false);
-                var resourceResponseFeedback = await this.SendCardToTeamAsync(turnContext, smeTeamCard, expertFeedbackId, cancellationToken).ConfigureAwait(false);
+                // var resourceResponseFeedback = await this.SendCardToTeamAsync(turnContext, smeTeamCard, expertFeedbackId, cancellationToken).ConfigureAwait(false);
+                // var resourceResponseFeedback = await this.SendCardToTeamAsync(turnContext, feedbackchannel, expertFeedbackId, cancellationToken).ConfigureAwait(false);
 
                 // If a ticket was created, update the ticket with the conversation info.
                 if (newTicket != null)
@@ -926,6 +933,21 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     newTicket.SmeCardActivityId = resourceResponse.ActivityId;
                     newTicket.SmeThreadConversationId = resourceResponse.Id;
 
+                    // newTicket.FeedbackChannelCardActivityId = resourceResponseFeedback.ActivityId;
+                    // newTicket.FeedbackChannelThreadConversationId = resourceResponseFeedback.Id;
+
+                    await this.ticketsProvider.UpsertTicketAsync(newTicket).ConfigureAwait(false);
+                }
+            }
+
+            // Send message to SME team.
+            else if (feedbackchannelcard != null)
+            {
+                var resourceResponseFeedback = await this.SendCardToTeamAsync(turnContext, feedbackchannelcard, expertFeedbackId, cancellationToken).ConfigureAwait(false);
+
+                // If a ticket was created, update the ticket with the conversation info.
+                if (newTicket != null)
+                {
                     newTicket.FeedbackChannelCardActivityId = resourceResponseFeedback.ActivityId;
                     newTicket.FeedbackChannelThreadConversationId = resourceResponseFeedback.Id;
 
