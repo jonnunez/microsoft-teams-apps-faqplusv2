@@ -17,5 +17,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common.Models
         /// </summary>
         [JsonProperty("msteams")]
         public CardAction MsTeams { get; set; }
+
+        [JsonProperty("msteamschannel")]
+        public CardAction MsTeamsChannel { get; set; }
     }
 }
