@@ -934,7 +934,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     newTicket.SmeThreadConversationId = resourceResponse.Id;
 
                     // newTicket.FeedbackChannelCardActivityId = resourceResponseFeedback.ActivityId;
-                    // newTicket.FeedbackChannelThreadConversationId = resourceResponseFeedback.Id;
+                    // 5 newTicket.FeedbackChannelThreadConversationId = resourceResponseFeedback.Id;
 
                     await this.ticketsProvider.UpsertTicketAsync(newTicket).ConfigureAwait(false);
                 }
