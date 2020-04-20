@@ -61,6 +61,15 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Provide a channel id deeplink which will be used by bot and then click on Ok to add or Edit to modify.
+        /// </summary>
+        public static string ChannelIdToolTipHoverMessage {
+            get {
+                return ResourceManager.GetString("ChannelIdToolTipHoverMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hi, I&apos;m your friendly Q&amp;A bot. You can ask me questions, and I&apos;ll do my best to answer. If I can&apos;t help, I&apos;ll connect you to an expert.
         ///
         ///My key features:
