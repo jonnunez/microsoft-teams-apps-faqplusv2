@@ -37,6 +37,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
     /// </summary>
     public class FaqPlusPlusBot : TeamsActivityHandler
     {
+        qnareplyappinsight reply;
+
         /// <summary>
         ///  Default access cache expiry in days to check if user using the app is a valid SME or not.
         /// </summary>
@@ -740,10 +742,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="turnContext">Context object containing information cached for a single turn of conversation with a user.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <returns>A task that represents the work queued to execute.</returns>
-        private async Task OnMessageActivityInPersonalChatAsync(
-            IMessageActivity message,
-            ITurnContext<IMessageActivity> turnContext,
-            CancellationToken cancellationToken)
+        private async Task OnMessageActivityInPersonalChatAsync(IMessageActivity message, ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             if (!string.IsNullOrEmpty(message.ReplyToId) && (message.Value != null) && ((JObject)message.Value).HasValues)
             {
@@ -753,7 +752,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             }
 
             string text = message.Text?.ToLower()?.Trim() ?? string.Empty;
-            
+
 
             switch (text)
             {
@@ -775,8 +774,9 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
                 default:
                     this.logger.LogInformation("Sending input to QnAMaker");
-                    await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
-                    TrackEvents.TrackConversation(text, this.GetQuestionAnswerReplyAsync(turnContext, text).ToString(), "QNA Conversation");
+                    // await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
+                    var reply = this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
+                    TrackEvents.TrackConversation(text, reply.ToString(), "QNA Conversation");
                     break;
             }
         }
@@ -1419,6 +1419,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 {
                     var answerData = queryResult.Answers.First();
                     var score = queryResult.Answers.First().Score;
+                    
 
                     AnswerModel answerModel = new AnswerModel();
 
