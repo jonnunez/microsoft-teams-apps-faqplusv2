@@ -1425,18 +1425,19 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     if (Validators.IsValidJSON(answerData.Answer))
                     {
                         answerModel = JsonConvert.DeserializeObject<AnswerModel>(answerData.Answer);
-                        TrackEvents.TrackConversation(text, answerData.ToString(), "QNA Conversation", score.ToString());
+                        TrackEvents.TrackConversation(text, answerData.Answer.First().ToString(), "QNA Conversation", score.ToString());
                     }
 
                     if (!string.IsNullOrEmpty(answerModel?.Title) || !string.IsNullOrEmpty(answerModel?.Subtitle) || !string.IsNullOrEmpty(answerModel?.ImageUrl) || !string.IsNullOrEmpty(answerModel?.RedirectionUrl))
                     {
                         await turnContext.SendActivityAsync(MessageFactory.Attachment(MessagingExtensionQnaCard.GetEndUserRichCard(text, answerData))).ConfigureAwait(false);
-                        TrackEvents.TrackConversation(text, answerData.ToString(), "QNA Conversation", score.ToString());
+                        TrackEvents.TrackConversation(text, answerData.Answer.First().ToString(), "QNA Conversation", score.ToString());
                     }
                     else
                     {
                         await turnContext.SendActivityAsync(MessageFactory.Attachment(ResponseCard.GetCard(answerData.Questions.FirstOrDefault(), answerData.Answer, text))).ConfigureAwait(false);
-                        TrackEvents.TrackConversation(text, answerData.ToString(), "QNA Conversation", score.ToString());
+                        TrackEvents.TrackConversation(text, answerData.Answer.First().ToString(), "QNA Conversation", score.ToString());
+
                     }
 
                 }
