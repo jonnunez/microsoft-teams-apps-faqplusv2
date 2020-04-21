@@ -30,6 +30,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus
         /// <returns>A unit of Execution.</returns>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseApplicationInsights()
             .UseStartup<Startup>()
             .ConfigureLogging((hostingContext, logging) =>
             {
