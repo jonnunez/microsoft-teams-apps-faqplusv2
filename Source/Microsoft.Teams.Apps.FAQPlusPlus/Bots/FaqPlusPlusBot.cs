@@ -775,8 +775,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
                 default:
                     this.logger.LogInformation("Sending input to QnAMaker");
-                    await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
-                    TrackEvents.TrackConversation(text, this.GetQuestionAnswerReplyAsync(turnContext, text).ToString(), "QNA Conversation");
+                    // await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
+                    TrackEvents.TrackConversation(text, this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false).ToString(), "QNA Conversation");
                     break;
             }
         }
