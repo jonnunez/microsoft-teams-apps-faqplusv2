@@ -753,6 +753,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             }
 
             string text = message.Text?.ToLower()?.Trim() ?? string.Empty;
+            
 
             switch (text)
             {
@@ -775,6 +776,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 default:
                     this.logger.LogInformation("Sending input to QnAMaker");
                     await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
+                    TrackEvents.TrackConversation(text, this.GetQuestionAnswerReplyAsync(turnContext, text).ToString(), "QNA Conversation");
                     break;
             }
         }
@@ -1416,6 +1418,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 if (queryResult.Answers.First().Id != -1)
                 {
                     var answerData = queryResult.Answers.First();
+                    var score = queryResult.Answers.First().Score;
+
                     AnswerModel answerModel = new AnswerModel();
 
                     if (Validators.IsValidJSON(answerData.Answer))
