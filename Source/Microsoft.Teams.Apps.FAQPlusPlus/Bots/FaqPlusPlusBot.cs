@@ -775,7 +775,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 default:
                     this.logger.LogInformation("Sending input to QnAMaker");
                     await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
-                    TrackEvents.TrackConversation(text, this.GetQuestionAnswerReplyAsync(turnContext, text).ToString(), "QNA Conversation");
                     break;
             }
         }
@@ -1409,11 +1408,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="text">Text message.</param>
         /// <param name="qnareply"></param>
         /// <returns>A task that represents the work queued to execute.</returns>
-        private async Task GetQuestionAnswerReplyAsync(ITurnContext<IMessageActivity> turnContext, string text, string qnareply="No Reply")
+        private async Task GetQuestionAnswerReplyAsync(ITurnContext<IMessageActivity> turnContext, string text, string qnareply = "No Reply Registered")
         {
             try
             {
                 var queryResult = await this.qnaServiceProvider.GenerateAnswerAsync(question: text, isTestKnowledgeBase: false).ConfigureAwait(false);
+                qnareply = queryResult.Answers.First().ToString();
 
                 if (queryResult.Answers.First().Id != -1)
                 {
@@ -1435,6 +1435,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     {
                         await turnContext.SendActivityAsync(MessageFactory.Attachment(ResponseCard.GetCard(answerData.Questions.FirstOrDefault(), answerData.Answer, text))).ConfigureAwait(false);
                     }
+
+                    TrackEvents.TrackConversation(text, answerData.ToString(), "QNA Conversation", score.ToString());
                 }
                 else
                 {
