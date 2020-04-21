@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <DocumentationFile>bin\Microsoft.Teams.Apps.FAQPlusPlus.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
+    <ApplicationInsightsResourceId>/subscriptions/94db83e1-3340-469f-afee-37982730c762/resourcegroups/faqplusbot-poc/providers/microsoft.insights/components/populartmd</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
