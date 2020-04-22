@@ -12,13 +12,13 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Configuration.Models
     public class TeamViewModel
     {
         /// <summary>
-        /// Gets or sets team id textbox to be used in View.
+        /// Gets or sets experts channel id textbox to be used in View.
         /// </summary>
-        [Required(ErrorMessage = "Enter team id.")]
+        [Required(ErrorMessage = "Enter experts channel id.")]
         [MinLength(1)]
         [DataType(DataType.Text)]
-        [Display(Name = "Team ID")]
-        [RegularExpression(@"(\S)+", ErrorMessage = "Enter team id which should not contain any whitespace.")]
+        [Display(Name = "Experts Channel ID")]
+        [RegularExpression(@"(\S)+", ErrorMessage = "Enter experts channel id which should not contain any whitespace.")]
         public string TeamId { get; set; }
     }
 }
