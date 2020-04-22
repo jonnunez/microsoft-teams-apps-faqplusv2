@@ -752,7 +752,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
             }
 
             string text = message.Text?.ToLower()?.Trim() ?? string.Empty;
-            
 
             switch (text)
             {
@@ -883,7 +882,9 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 case Constants.ShareFeedback:
                     this.logger.LogInformation("Sending user share feedback card (from answer)");
                     var shareFeedbackPayload = ((JObject)message.Value).ToObject<ResponseCardPayload>();
+                    var feedback = ((JObject)message.Value).ToObject<ShareFeedbackCardPayload>();
                     await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard(shareFeedbackPayload))).ConfigureAwait(false);
+                    TrackEvents.TrackEvent(feedback.UserQuestion,feedback.Description,feedback.Rating, "Feedback");
                     break;
 
                 case AskAnExpertCard.AskAnExpertSubmitText:
@@ -934,7 +935,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     newTicket.SmeThreadConversationId = resourceResponse.Id;
 
                     // newTicket.FeedbackChannelCardActivityId = resourceResponseFeedback.ActivityId;
-                    // 5 newTicket.FeedbackChannelThreadConversationId = resourceResponseFeedback.Id;
+                    // newTicket.FeedbackChannelThreadConversationId = resourceResponseFeedback.Id;
 
                     await this.ticketsProvider.UpsertTicketAsync(newTicket).ConfigureAwait(false);
                 }

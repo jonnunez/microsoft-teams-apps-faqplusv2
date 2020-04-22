@@ -9,20 +9,22 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         static TelemetryClient telemetry = new TelemetryClient();
         static TelemetryClient telemetryConversation = new TelemetryClient();
 
-        public static void TrackEvent(string lastSearchedText, string lastAnswerText, string vote, ChannelAccount from = null)
+        public static void TrackEvent(string lastSearchedText, string lastAnswerText, string feedbackvalue, string Conversationtype, ChannelAccount from = null)
         {
             var properties = new Dictionary<string, string>
                         {
                               {"Question", lastSearchedText },
-                              {"Answer",lastAnswerText  },
-                              {"Vote", vote },
+                              {"Answer",lastAnswerText},
+                              {"Vote", feedbackvalue },
+                              {"Conversation Type", Conversationtype},
                         };
             if (from != null)
             {
                 properties.Add("Username", from.Id);
                 properties.Add("Email", from.Name);
             }
-            telemetry.TrackEvent(vote + "-Vote", properties);
+
+            telemetry.TrackEvent(feedbackvalue + "- Feedback", properties);
         }
 
         //public static void TrackConversation(string lastSearchedText = "N/A", string lastAnswerText = "N/A", string Conversationtype="N/A", string score = "N/A", string intent = "N/A", string Id = "N/A", string Name = "N/A")
@@ -44,6 +46,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
                 properties.Add("Username", from.Id);
                 properties.Add("Email", from.Name);
             }
+
             telemetryConversation.TrackEvent(Conversationtype + "- Conversation Type", properties);
         }
 
