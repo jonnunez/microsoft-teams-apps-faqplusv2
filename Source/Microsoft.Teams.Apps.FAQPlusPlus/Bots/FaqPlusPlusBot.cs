@@ -882,9 +882,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 case Constants.ShareFeedback:
                     this.logger.LogInformation("Sending user share feedback card (from answer)");
                     var shareFeedbackPayload = ((JObject)message.Value).ToObject<ResponseCardPayload>();
-                    var feedback = ((JObject)message.Value).ToObject<ShareFeedbackCardPayload>();
                     await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard(shareFeedbackPayload))).ConfigureAwait(false);
-                    TrackEvents.TrackEvent(feedback.UserQuestion,feedback.Description,feedback.Rating, "Feedback");
                     break;
 
                 case AskAnExpertCard.AskAnExpertSubmitText:
@@ -909,7 +907,11 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     feedbackchannelcard = await AdaptiveCardHelper.ShareFeedbackSubmitText(message, turnContext, cancellationToken).ConfigureAwait(false);
                     if (feedbackchannelcard != null)
                     {
+                        var feedback = ((JObject)message.Value).ToObject<ShareFeedbackCardPayload>();
+
                         await turnContext.SendActivityAsync(MessageFactory.Text(Strings.ThankYouTextContent)).ConfigureAwait(false);
+                        TrackEvents.TrackEvent(feedback.UserQuestion, feedback.Description, feedback.Rating, "Feedback");
+
                     }
                     break;
 

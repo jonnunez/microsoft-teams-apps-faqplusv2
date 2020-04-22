@@ -15,7 +15,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
                         {
                               {"Question", lastSearchedText },
                               {"Answer",lastAnswerText},
-                              {"Vote", feedbackvalue },
+                              {"Feedback", feedbackvalue },
                               {"Conversation Type", Conversationtype},
                         };
             if (from != null)
