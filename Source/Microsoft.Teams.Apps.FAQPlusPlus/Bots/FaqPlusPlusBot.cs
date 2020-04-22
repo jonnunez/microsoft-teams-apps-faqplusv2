@@ -910,8 +910,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                         var feedback = ((JObject)message.Value).ToObject<ShareFeedbackCardPayload>();
 
                         await turnContext.SendActivityAsync(MessageFactory.Text(Strings.ThankYouTextContent)).ConfigureAwait(false);
-                        TrackEvents.TrackEvent(feedback.UserQuestion, feedback.Description, feedback.Rating, "Feedback");
-
+                        TrackEvents.TrackEvent(feedback.UserQuestion, feedback.Description, feedback.Rating);
                     }
                     break;
 

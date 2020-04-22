@@ -9,20 +9,19 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         static TelemetryClient telemetry = new TelemetryClient();
         static TelemetryClient telemetryConversation = new TelemetryClient();
 
-        public static void TrackEvent(string lastSearchedText, string lastAnswerText, string feedbackvalue, string Conversationtype, ChannelAccount from = null)
+        public static void TrackEvent(string lastSearchedText, string userComment, string feedbackvalue)
         {
             var properties = new Dictionary<string, string>
                         {
                               {"Question", lastSearchedText },
-                              {"Answer",lastAnswerText},
+                              {"Comments",userComment},
                               {"Feedback", feedbackvalue },
-                              {"Conversation Type", Conversationtype},
                         };
-            if (from != null)
-            {
-                properties.Add("Username", from.Id);
-                properties.Add("Email", from.Name);
-            }
+            //if (from != null)
+            //{
+            //    properties.Add("Username", from.Id);
+            //    properties.Add("Email", from.Name);
+            //}
 
             telemetry.TrackEvent(feedbackvalue + "- Feedback", properties);
         }
