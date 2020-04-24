@@ -30,11 +30,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
         /// <param name="ticketsProvider">Tickets Provider.</param>
         /// <returns>A task that represents the work queued to execute.</returns>
-        public static async Task<TicketEntity> AskAnExpertSubmitText(
-            IMessageActivity message,
-            ITurnContext<IMessageActivity> turnContext,
-            CancellationToken cancellationToken,
-            ITicketsProvider ticketsProvider)
+        public static async Task<TicketEntity> AskAnExpertSubmitText(IMessageActivity message, ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken, ITicketsProvider ticketsProvider)
         {
             var askAnExpertSubmitTextPayload = ((JObject)message.Value).ToObject<AskAnExpertCardPayload>();
 
@@ -94,11 +90,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// <param name="member">Teams channel account detailing user Azure Active Directory details.</param>
         /// <param name="ticketsProvider">Tickets Provider.</param>
         /// <returns>TicketEntity object.</returns>
-        private static async Task<TicketEntity> CreateTicketAsync(
-            IMessageActivity message,
-            AskAnExpertCardPayload data,
-            TeamsChannelAccount member,
-            ITicketsProvider ticketsProvider)
+        private static async Task<TicketEntity> CreateTicketAsync(IMessageActivity message, AskAnExpertCardPayload data, TeamsChannelAccount member, ITicketsProvider ticketsProvider)
         {
             TicketEntity ticketEntity = new TicketEntity
             {

@@ -52,15 +52,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// <param name="knowledgeBaseSearchService">Knowledgebase search service.</param>
         /// <param name="activityStorageProvider">Activity storage provider.</param>
         /// <returns><see cref="Task"/> Returns MessagingExtensionResult which will be used for providing the card.</returns>
-        public static async Task<MessagingExtensionResult> GetSearchResultAsync(
-            string query,
-            string commandId,
-            int? count,
-            int? skip,
-            DateTimeOffset? localTimestamp,
-            ISearchService searchService,
-            IKnowledgeBaseSearchService knowledgeBaseSearchService,
-            IActivityStorageProvider activityStorageProvider)
+        public static async Task<MessagingExtensionResult> GetSearchResultAsync(string query, string commandId, int? count, int? skip, DateTimeOffset? localTimestamp, ISearchService searchService, IKnowledgeBaseSearchService knowledgeBaseSearchService,IActivityStorageProvider activityStorageProvider)
         {
             MessagingExtensionResult composeExtensionResult = new MessagingExtensionResult
             {
@@ -111,10 +103,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// <param name="localTimestamp">Local timestamp of the user activity.</param>
         /// <param name="searchServiceResults">List of tickets from Azure search service.</param>
         /// <returns><see cref="Task"/> Returns MessagingExtensionResult which will be shown in messaging extension tab.</returns>
-        public static MessagingExtensionResult GetMessagingExtensionResult(
-            string commandId,
-            DateTimeOffset? localTimestamp,
-            IList<TicketEntity> searchServiceResults)
+        public static MessagingExtensionResult GetMessagingExtensionResult(string commandId, DateTimeOffset? localTimestamp, IList<TicketEntity> searchServiceResults) 
         {
             MessagingExtensionResult composeExtensionResult = new MessagingExtensionResult
             {
