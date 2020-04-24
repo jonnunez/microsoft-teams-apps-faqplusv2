@@ -387,7 +387,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 string expertRequestId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.TeamId).ConfigureAwait(false);
                 string expertfeedbackId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.ChannelId).ConfigureAwait(false);
 
-                if (turnContext != null && (teamsChannelData?.Team?.Id == expertRequestId || teamsChannelData?.Channel?.Id == expertfeedbackId) && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
+                if (turnContext != null && (teamsChannelData?.Team?.Id == expertRequestId && teamsChannelData?.Channel?.Id == expertfeedbackId) && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
                 {
                     var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
                     var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
@@ -540,9 +540,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
         /// <param name="questionAnswerAdaptiveCardEditor">Card as an input.</param>
         /// <param name="titleText">Gets or sets text that appears below the app name and to the right of the app icon.</param>
         /// <returns>Response of messaging extension action object.</returns>
-        private static Task<MessagingExtensionActionResponse> GetMessagingExtensionActionResponseAsync(
-            Attachment questionAnswerAdaptiveCardEditor,
-            string titleText = "")
+        private static Task<MessagingExtensionActionResponse> GetMessagingExtensionActionResponseAsync(Attachment questionAnswerAdaptiveCardEditor, string titleText = "")
         {
             return Task.FromResult(new MessagingExtensionActionResponse
             {

@@ -103,7 +103,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Helpers
         /// <param name="localTimestamp">Local timestamp of the user activity.</param>
         /// <param name="searchServiceResults">List of tickets from Azure search service.</param>
         /// <returns><see cref="Task"/> Returns MessagingExtensionResult which will be shown in messaging extension tab.</returns>
-        public static MessagingExtensionResult GetMessagingExtensionResult(string commandId, DateTimeOffset? localTimestamp, IList<TicketEntity> searchServiceResults) 
+        public static MessagingExtensionResult GetMessagingExtensionResult(string commandId, DateTimeOffset? localTimestamp, IList<TicketEntity> searchServiceResults)
         {
             MessagingExtensionResult composeExtensionResult = new MessagingExtensionResult
             {
