@@ -388,7 +388,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 string expertfeedbackId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.ChannelId).ConfigureAwait(false);
 
                 // teamsChannelData?.Team?.Id == expertRequestId
-                if (turnContext != null && teamsChannelData?.Channel?.Id == expertfeedbackId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
+                if (turnContext != null && teamsChannelData?.Channel?.Id == expertRequestId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
                 {
                     var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
                     var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
