@@ -189,16 +189,12 @@
     <value>Puedes ver aquellas preguntas que el bot no pudo contestarle a los usuarios.</value>
     <comment>Team carousel function card content- team can take the question from the end users through bot.</comment>
   </data>
-  <data name="TeamTicketSystemHeaderText" xml:space="preserve">
-    <value>Manage queries</value>
-    <comment>Title of the query carousel card- ticket system.</comment>
-  </data>
   <data name="TeamTicketSystemContent" xml:space="preserve">
     <value>Marcar las consultas como asignadas o cerradas para mantener control de las consultas atendidas.</value>
     <comment>Team carousel query card content- team can keep track of the user request.</comment>
   </data>
   <data name="TakeATeamTourButtonText" xml:space="preserve">
-    <value>Team tour</value>
+    <value>tomar sme team tour</value>
     <comment>Action button which gives tour for the team on bot Functionalities.</comment>
   </data>
   <data name="WelcomeTeamCardContent" xml:space="preserve">
@@ -587,5 +583,9 @@
   <data name="UpdateHistoryDateHeaderText" xml:space="preserve">
     <value>Date</value>
     <comment>Date header text in update history adaptive card text.</comment>
+  </data>
+  <data name="TeamTicketSystemHeaderText" xml:space="preserve">
+    <value>Manejar consultas</value>
+    <comment>Title of the query carousel card- ticket system.</comment>
   </data>
 </root>

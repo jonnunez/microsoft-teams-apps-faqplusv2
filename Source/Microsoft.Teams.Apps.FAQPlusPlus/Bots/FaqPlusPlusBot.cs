@@ -388,6 +388,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 string expertfeedbackId = await this.configurationProvider.GetSavedEntityDetailAsync(ConfigurationEntityTypes.ChannelId).ConfigureAwait(false);
 
                 // teamsChannelData?.Team?.Id == expertRequestId
+                // you have to change the teamschanneldata? to channel and not teams and to the channel ID as well
                 if (turnContext != null && teamsChannelData?.Channel?.Id == expertRequestId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
                 {
                     var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
@@ -398,7 +399,8 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                         ComposeExtension = await SearchHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.searchService, this.knowledgeBaseSearchService, this.activityStorageProvider).ConfigureAwait(false),
                     };
                 }
-                else if (turnContext != null && teamsChannelData?.Team?.Id == expertRequestId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
+
+                else if (turnContext != null && teamsChannelData?.Channel?.Id == expertfeedbackId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
                 {
                     var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
                     var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
