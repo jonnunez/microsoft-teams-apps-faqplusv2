@@ -1450,17 +1450,19 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 var queryResult = await this.qnaServiceProvider.GenerateAnswerAsync(question: text, isTestKnowledgeBase: false).ConfigureAwait(false);
                 qnareply = queryResult.Answers.First().ToString();
 
-                if (text.Contains(Constants.TakeATour))
-                {
-                    this.logger.LogInformation("Sending user tour card");
-                    var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
-                    await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);               }
-                else if (queryResult.Answers.First().Id != -1)
+                if (queryResult.Answers.First().Id != -1)
                 {
                     var answerData = queryResult.Answers.First();
                     var score = queryResult.Answers.First().Score;
 
                     AnswerModel answerModel = new AnswerModel();
+
+                    if (text.Contains("Take a tour"))
+                    {
+                        this.logger.LogInformation("Sending user tour card");
+                        var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
+                        await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
+                    }
 
                     if (Validators.IsValidJSON(answerData.Answer))
                     {
@@ -1477,7 +1479,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     {
                         await turnContext.SendActivityAsync(MessageFactory.Attachment(ResponseCard.GetCard(answerData.Questions.FirstOrDefault(), answerData.Answer, text))).ConfigureAwait(false);
                         TrackEvents.TrackConversation(text, answerData.Answer.ToString(), "QNA Conversation", score.ToString());
-
                     }
 
                 }
