@@ -765,28 +765,50 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
             string text = message.Text?.ToLower()?.Trim() ?? string.Empty;
 
-            switch (text)
+            //switch (text)
+            //{
+            //    case Constants.AskAnExpert:
+            //        this.logger.LogInformation("Sending user ask an expert card");
+            //        await turnContext.SendActivityAsync(MessageFactory.Attachment(AskAnExpertCard.GetCard())).ConfigureAwait(false);
+            //        break;
+
+            //    case Constants.ShareFeedback:
+            //        this.logger.LogInformation("Sending user feedback card");
+            //        await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard())).ConfigureAwait(false);
+            //        break;
+
+            //    case Constants.TakeATour:
+            //        this.logger.LogInformation("Sending user tour card");
+            //        var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
+            //        await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
+            //        break;
+
+            //    default:
+            //        this.logger.LogInformation("Sending input to QnAMaker");
+            //        await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
+            //        break;
+            //}
+
+            if (text.Contains(Constants.AskAnExpert))
             {
-                case Constants.AskAnExpert:
-                    this.logger.LogInformation("Sending user ask an expert card");
-                    await turnContext.SendActivityAsync(MessageFactory.Attachment(AskAnExpertCard.GetCard())).ConfigureAwait(false);
-                    break;
-
-                case Constants.ShareFeedback:
-                    this.logger.LogInformation("Sending user feedback card");
-                    await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard())).ConfigureAwait(false);
-                    break;
-
-                case Constants.TakeATour:
-                    this.logger.LogInformation("Sending user tour card");
-                    var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
-                    await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
-                    break;
-
-                default:
-                    this.logger.LogInformation("Sending input to QnAMaker");
-                    await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
-                    break;
+                this.logger.LogInformation("Sending user ask an expert card");
+                await turnContext.SendActivityAsync(MessageFactory.Attachment(AskAnExpertCard.GetCard())).ConfigureAwait(false);                
+            }
+            else if (text.Contains(Constants.ShareFeedback))
+            {
+                this.logger.LogInformation("Sending user feedback card");
+                await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard())).ConfigureAwait(false);
+            }
+            else if (text.Contains(Constants.TakeATour))
+            {
+                this.logger.LogInformation("Sending user tour card");
+                var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
+                await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
+            }
+            else
+            {
+                this.logger.LogInformation("Sending input to QnAMaker");
+                await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
             }
         }
 
