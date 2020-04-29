@@ -907,7 +907,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to tomar sme team tour.
+        ///   Looks up a localized string similar to Team tour.
         /// </summary>
         public static string TakeATeamTourButtonText {
             get {
@@ -916,7 +916,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tomar el tour.
+        ///   Looks up a localized string similar to Tomar tour.
         /// </summary>
         public static string TakeATourButtonText {
             get {
