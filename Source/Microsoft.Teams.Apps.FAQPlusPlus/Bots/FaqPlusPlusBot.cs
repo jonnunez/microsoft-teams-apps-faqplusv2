@@ -776,7 +776,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard())).ConfigureAwait(false);
                     break;
 
-                case Constants.TakeATour:
+                case Constants.TakeATour:// it's not triggering here for some odd reason
                     this.logger.LogInformation("Sending user tour card");
                     var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
                     await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
@@ -1450,7 +1450,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                 var queryResult = await this.qnaServiceProvider.GenerateAnswerAsync(question: text, isTestKnowledgeBase: false).ConfigureAwait(false);
                 qnareply = queryResult.Answers.First().ToString();
 
-                if (queryResult.Answers.First().Id != -1)
+                if (text.Contains(Constants.TakeATour))
+                {
+                    this.logger.LogInformation("Sending user tour card");
+                    var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
+                    await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);               }
+                else if (queryResult.Answers.First().Id != -1)
                 {
                     var answerData = queryResult.Answers.First();
                     var score = queryResult.Answers.First().Score;
