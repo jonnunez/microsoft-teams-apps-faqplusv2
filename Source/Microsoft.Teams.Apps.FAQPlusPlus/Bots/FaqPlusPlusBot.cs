@@ -777,15 +777,14 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     break;
 
                 case Constants.TakeATour:
-                    this.logger.LogInformation("Sending input to QnAMaker");
-                    await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
-                    break;
-
-                default:
-
                     this.logger.LogInformation("Sending user tour card");
                     var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
                     await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
+                    break;
+
+                default:
+                    this.logger.LogInformation("Sending input to QnAMaker");
+                    await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
                     break;
             }
 
