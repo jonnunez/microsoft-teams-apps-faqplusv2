@@ -63,12 +63,12 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Common
         /// <summary>
         /// TeamTour - text that triggers team tour action.
         /// </summary>
-        public const string TeamTour = "team tour";
+        public const string TeamTour = "Team tour";
 
         /// <summary>
         /// TakeAtour - text that triggers take a tour action for the user.
         /// </summary>
-        public const string TakeATour = "Tomar tour";
+        public const string TakeATour = "Take a tour";
 
         /// <summary>
         /// AskAnExpert - text that renders the ask an expert card.
