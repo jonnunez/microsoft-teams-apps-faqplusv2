@@ -389,7 +389,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
                 // teamsChannelData?.Team?.Id == expertRequestId
                 // you have to change the teamschanneldata? to channel and not teams and to the channel ID as well
-                if (turnContext != null && teamsChannelData?.Channel?.Id == expertRequestId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
+                if (turnContext != null && teamsChannelData?.Channel?.Id == expertfeedbackId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
                 {
                     var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
                     var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
@@ -399,16 +399,16 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                         ComposeExtension = await SearchHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.searchService, this.knowledgeBaseSearchService, this.activityStorageProvider).ConfigureAwait(false),
                     };
                 }
-                else if (turnContext != null && teamsChannelData?.Channel?.Id == expertfeedbackId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
-                {
-                    var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
-                    var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
+                //else if (turnContext != null && teamsChannelData?.Channel?.Id == expertfeedbackId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
+                //{
+                //    var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
+                //    var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
 
-                    return new MessagingExtensionResponse
-                    {
-                        ComposeExtension = await SearchHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.searchService, this.knowledgeBaseSearchService, this.activityStorageProvider).ConfigureAwait(false),
-                    };
-                }
+                //    return new MessagingExtensionResponse
+                //    {
+                //        ComposeExtension = await SearchHelper.GetSearchResultAsync(searchQuery, messageExtensionQuery.CommandId, messageExtensionQuery.QueryOptions.Count, messageExtensionQuery.QueryOptions.Skip, turnContextActivity.LocalTimestamp, this.searchService, this.knowledgeBaseSearchService, this.activityStorageProvider).ConfigureAwait(false),
+                //    };
+                //}
 
                 return new MessagingExtensionResponse
                 {
@@ -776,7 +776,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard())).ConfigureAwait(false);
                     break;
 
-                case Constants.TakeATour:// it's not triggering here for some odd reason
+                case Constants.TakeATour: // it's not triggering here for some odd reason
                     this.logger.LogInformation("Sending user tour card");
                     var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
                     await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
@@ -787,28 +787,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
                     break;
             }
-
-            //if (text.Contains(Constants.AskAnExpert))
-            //{
-            //    this.logger.LogInformation("Sending user ask an expert card");
-            //    await turnContext.SendActivityAsync(MessageFactory.Attachment(AskAnExpertCard.GetCard())).ConfigureAwait(false);                
-            //}
-            //else if (text.Contains(Constants.ShareFeedback))
-            //{
-            //    this.logger.LogInformation("Sending user feedback card");
-            //    await turnContext.SendActivityAsync(MessageFactory.Attachment(ShareFeedbackCard.GetCard())).ConfigureAwait(false);
-            //}
-            //else if (text.Contains(Constants.TakeATour))
-            //{
-            //    this.logger.LogInformation("Sending user tour card");
-            //    var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
-            //    await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
-            //}
-            //else
-            //{
-            //    this.logger.LogInformation("Sending input to QnAMaker");
-            //    await this.GetQuestionAnswerReplyAsync(turnContext, text).ConfigureAwait(false);
-            //}
         }
 
         /// <summary>
@@ -1456,13 +1434,6 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
                     var score = queryResult.Answers.First().Score;
 
                     AnswerModel answerModel = new AnswerModel();
-
-                    if (text.Contains("Take a tour"))
-                    {
-                        this.logger.LogInformation("Sending user tour card");
-                        var userTourCards = TourCarousel.GetUserTourCards(this.appBaseUri);
-                        await turnContext.SendActivityAsync(MessageFactory.Carousel(userTourCards)).ConfigureAwait(false);
-                    }
 
                     if (Validators.IsValidJSON(answerData.Answer))
                     {
