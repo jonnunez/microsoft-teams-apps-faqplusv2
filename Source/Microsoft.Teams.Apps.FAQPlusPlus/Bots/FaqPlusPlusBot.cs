@@ -389,7 +389,7 @@ namespace Microsoft.Teams.Apps.FAQPlusPlus.Bots
 
                 // teamsChannelData?.Team?.Id == expertRequestId
                 // you have to change the teamschanneldata? to channel and not teams and to the channel ID as well
-                if (turnContext != null && teamsChannelData?.Channel?.Id == expertfeedbackId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
+                if (turnContext != null && teamsChannelData?.Channel?.Id == expertRequestId && await this.IsMemberOfSmeTeamAsync(turnContext).ConfigureAwait(false))
                 {
                     var messageExtensionQuery = JsonConvert.DeserializeObject<MessagingExtensionQuery>(turnContextActivity.Value.ToString());
                     var searchQuery = this.GetSearchQueryString(messageExtensionQuery);
